@@ -1,0 +1,225 @@
+//Q1
+#include <iostream>
+using namespace std;
+
+template <typename T>
+class Queue {
+private:
+    struct Node {
+        T data;
+        Node* next;
+        Node(T value) : data(value), next(nullptr) {}
+    };
+    Node* frontNode;
+    Node* rearNode;
+    size_t count;
+
+public:
+    Queue() : frontNode(nullptr), rearNode(nullptr), count(0) {}
+
+    ~Queue() {
+        while (!empty()) {
+            pop();
+        }
+    }
+
+    void push(const T& value) {
+        Node* newNode = new Node(value);
+        if (rearNode) {
+            rearNode->next = newNode;
+        }
+        rearNode = newNode;
+        if (!frontNode) {
+            frontNode = rearNode;
+        }
+        ++count;
+    }
+
+    void pop() {
+        if (empty()) {
+            cout << "Queue is empty, cannot pop!" << endl;
+            return;
+        }
+        Node* temp = frontNode;
+        frontNode = frontNode->next;
+        if (!frontNode) {
+            rearNode = nullptr;
+        }
+        delete temp;
+        --count;
+    }
+
+    T front() const {
+        if (empty()) {
+            throw runtime_error("Queue is empty!");
+        }
+        return frontNode->data;
+    }
+
+    size_t size() const {
+        return count;
+    }
+
+    bool empty() const {
+        return count == 0;
+    }
+
+    void display() {
+        Node* current = frontNode;
+        while (current) {
+            cout << current->data << " ";
+            current = current->next;
+        }
+        cout << endl;
+    }
+
+    void move_to_rear() {
+        if (empty()) {
+            cout << "Queue is empty, cannot move front to rear!" << endl;
+            return;
+        }
+        T frontElement = front(); // Get the front element
+        pop(); // Remove the front element
+        push(frontElement); // Add it to the rear
+    }
+};
+
+int main() {
+    // a) Instantiate the queue with integers and push 10 values into the queue
+    Queue<int> q;
+    for (int i = 1; i <= 10; ++i) {
+        q.push(i);
+    }
+
+    // b) Display all elements in the queue using queue functions
+    cout << "Queue elements: ";
+    q.display();
+
+    // c) Move the front element to the rear
+    q.move_to_rear();
+    cout << "Queue after moving front to rear: ";
+    q.display();
+
+    return 0;
+}
+
+//Q2
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int recursiveLinearSearch(const vector<int>& arr, int target, int index) {
+    // Base case: if we have reached the end of the vector, return -1
+    if (index < 0) {
+        return -1;
+    }
+
+    // Recursive call to search further in the vector
+    int pos = recursiveLinearSearch(arr, target, index - 1);
+
+    // Check current element after the recursive call to ensure it finds the last occurrence
+    if (arr[index] == target && pos == -1) {
+        return index; // Return the index if it's the last occurrence of the target
+    }
+
+    return pos; // Return the result of the recursive call if not found here
+}
+
+int main() {
+    vector<int> data = {1, 3, 5, 3, 9, 3, 7};
+    int target = 3;
+
+    int lastIndex = recursiveLinearSearch(data, target, data.size() - 1);
+
+    if (lastIndex != -1) {
+        cout << "The last occurrence of " << target << " is at index " << lastIndex << "." << endl;
+    } else {
+        cout << target << " is not found in the vector." << endl;
+    }
+
+    return 0;
+}
+
+//Q3
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+    Node(int value) : data(value), next(nullptr) {}
+};
+
+// Function to insert a node at the end of the list
+void append(Node*& head, int value) {
+    Node* newNode = new Node(value);
+    if (!head) {
+        head = newNode;
+        return;
+    }
+    Node* temp = head;
+    while (temp->next) {
+        temp = temp->next;
+    }
+    temp->next = newNode;
+}
+
+// Function to print the linked list
+void printList(Node* head) {
+    Node* temp = head;
+    while (temp) {
+        cout << temp->data << " ";
+        temp = temp->next;
+    }
+    cout << endl;
+}
+
+// Function to perform insertion sort on a linked list
+void insertionSort(Node*& head) {
+    if (!head || !head->next) {
+        return; // List is empty or has only one element
+    }
+
+    Node* sorted = nullptr; // Initialize the sorted part of the list
+    Node* current = head;   // Start from the original list
+
+    while (current) {
+        Node* next = current->next; // Save the next node
+        // Insert current node into the sorted list
+        if (!sorted || sorted->data >= current->data) {
+            current->next = sorted;
+            sorted = current;
+        } else {
+            Node* temp = sorted;
+            // Locate the node before the point of insertion
+            while (temp->next && temp->next->data < current->data) {
+                temp = temp->next;
+            }
+            current->next = temp->next;
+            temp->next = current;
+        }
+        current = next; // Move to the next node
+    }
+
+    head = sorted; // Update head to the sorted list
+}
+
+int main() {
+    Node* head = nullptr;
+    // Sample data to sort
+    append(head, 5);
+    append(head, 3);
+    append(head, 8);
+    append(head, 1);
+    append(head, 7);
+
+    cout << "Original list: ";
+    printList(head);
+
+    insertionSort(head);
+
+    cout << "Sorted list: ";
+    printList(head);
+
+    return 0;
+}
