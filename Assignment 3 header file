@@ -1,0 +1,46 @@
+#ifndef CUSTOM_UTILITIES_H
+#define CUSTOM_UTILITIES_H
+
+#include <vector>
+
+// 1. Queue Class Template
+template <typename T>
+class Queue {
+private:
+    struct Node {
+        T data;
+        Node* next;
+        Node(T value) : data(value), next(nullptr) {}
+    };
+    Node* frontNode;
+    Node* rearNode;
+    size_t count;
+
+public:
+    Queue();
+    ~Queue();
+    void push(const T& value);
+    void pop();
+    T front() const;
+    size_t size() const;
+    bool empty() const;
+    void display();
+    void move_to_rear();
+};
+
+// 2. Recursive Linear Search Function Declaration
+int recursiveLinearSearch(const std::vector<int>& arr, int target, int index);
+
+// 3. Linked List Node Structure for Sorting
+struct Node {
+    int data;
+    Node* next;
+    Node(int value);
+};
+
+// Linked List Utility Functions
+void append(Node*& head, int value);
+void printList(Node* head);
+void insertionSort(Node*& head);
+
+#endif // CUSTOM_UTILITIES_H
