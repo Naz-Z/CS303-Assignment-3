@@ -25,6 +25,7 @@ The main() function demonstrates:
 Instantiating a queue of integers and pushing 10 values.
 Displaying all elements in the queue.
 Moving the front element to the rear.
+
 2. Recursive Linear Search (Q2)
 This function finds the last occurrence of a target value in a vector using a recursive linear search approach.
 
@@ -37,6 +38,7 @@ The main() function demonstrates:
 
 Searching for the last occurrence of a target integer in a vector.
 Displaying the index of the last occurrence or indicating if the target is not found.
+
 3. Insertion Sort for a Linked List (Q3)
 This implementation sorts a singly linked list of integers using the insertion sort algorithm.
 
